@@ -1,0 +1,56 @@
+CREATE TABLE TravelAgencies (
+    AgencyID INT PRIMARY KEY,
+    AgencyName VARCHAR(100),
+    Country VARCHAR(50)
+);
+
+CREATE TABLE TourPackages (
+    PackageID INT PRIMARY KEY,
+    Destination VARCHAR(100),
+    Duration VARCHAR(20),
+    Price DECIMAL(10,2),
+    AgencyID INT,
+    FOREIGN KEY (AgencyID) REFERENCES TravelAgencies(AgencyID)
+);
+
+INSERT INTO TravelAgencies VALUES (1, 'MakeMyTrip', 'India');
+INSERT INTO TravelAgencies VALUES (2, 'Expedia', 'USA');
+INSERT INTO TravelAgencies VALUES (3, 'Yatra', 'India');
+INSERT INTO TravelAgencies VALUES (4, 'Booking.com', 'Netherlands');
+INSERT INTO TravelAgencies VALUES (5, 'Goibibo', 'India');
+INSERT INTO TravelAgencies VALUES (6, 'TripAdvisor', 'USA');
+INSERT INTO TravelAgencies VALUES (7, 'Cleartrip', 'India');
+INSERT INTO TravelAgencies VALUES (8, 'TravelTriangle', 'India');
+INSERT INTO TravelAgencies VALUES (9, 'Thomas Cook', 'UK');
+INSERT INTO TravelAgencies VALUES (10, 'Cox & Kings', 'India');
+
+SELECT * FROM TravelAgencies;
+
+INSERT INTO TourPackages VALUES (101, 'Bali', '5 days', 45000.00, 1);
+INSERT INTO TourPackages VALUES (102, 'Paris', '7 days', 120000.00, 2);
+INSERT INTO TourPackages VALUES (103, 'Goa', '4 days', 25000.00, 3);
+INSERT INTO TourPackages VALUES (104, 'Dubai', '6 days', 80000.00, 4);
+INSERT INTO TourPackages VALUES (105, 'Manali', '3 days', 18000.00, 5);
+INSERT INTO TourPackages VALUES (106, 'New York', '5 days', 150000.00, 6);
+INSERT INTO TourPackages VALUES (107, 'Kerala', '6 days', 40000.00, 7);
+INSERT INTO TourPackages VALUES (108, 'Thailand', '5 days', 50000.00, 8);
+INSERT INTO TourPackages VALUES (109, 'London', '7 days', 130000.00, 9);
+INSERT INTO TourPackages VALUES (110, 'Andaman', '5 days', 60000.00, 10);
+
+SELECT * FROM TourPackages;
+
+-- INNER JOIN
+SELECT TourPackages.Destination, TourPackages.Duration, TourPackages.Price,
+       TravelAgencies.AgencyName, TravelAgencies.Country
+FROM TourPackages
+INNER JOIN TravelAgencies ON TourPackages.AgencyID = TravelAgencies.AgencyID;
+
+-- LEFT JOIN
+SELECT TourPackages.Destination, TourPackages.Duration, TravelAgencies.AgencyName
+FROM TourPackages
+LEFT JOIN TravelAgencies ON TourPackages.AgencyID = TravelAgencies.AgencyID;
+
+-- RIGHT JOIN
+SELECT TravelAgencies.AgencyName, TravelAgencies.Country, TourPackages.Destination
+FROM TourPackages
+RIGHT JOIN TravelAgencies ON TourPackages.AgencyID = TravelAgencies.AgencyID;
