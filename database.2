@@ -1,0 +1,56 @@
+CREATE TABLE HospitalDepartments (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(100),
+    Specialization VARCHAR(50)
+);
+
+CREATE TABLE Treatments (
+    TreatmentID INT PRIMARY KEY,
+    TreatmentName VARCHAR(100),
+    Duration VARCHAR(20),
+    Cost DECIMAL(10,2),
+    DeptID INT,
+    FOREIGN KEY (DeptID) REFERENCES HospitalDepartments(DeptID)
+);
+
+INSERT INTO HospitalDepartments VALUES (1, 'Cardiology', 'Heart');
+INSERT INTO HospitalDepartments VALUES (2, 'Neurology', 'Brain');
+INSERT INTO HospitalDepartments VALUES (3, 'Orthopedics', 'Bones');
+INSERT INTO HospitalDepartments VALUES (4, 'Dermatology', 'Skin');
+INSERT INTO HospitalDepartments VALUES (5, 'Pediatrics', 'Children');
+INSERT INTO HospitalDepartments VALUES (6, 'Oncology', 'Cancer');
+INSERT INTO HospitalDepartments VALUES (7, 'ENT', 'Ear/Nose/Throat');
+INSERT INTO HospitalDepartments VALUES (8, 'Gastroenterology', 'Digestive');
+INSERT INTO HospitalDepartments VALUES (9, 'Urology', 'Urinary');
+INSERT INTO HospitalDepartments VALUES (10, 'Psychiatry', 'Mental Health');
+
+SELECT * FROM HospitalDepartments;
+
+INSERT INTO Treatments VALUES (101, 'Angioplasty', '2 days', 150000.00, 1);
+INSERT INTO Treatments VALUES (102, 'EEG Scan', '1 hour', 3000.00, 2);
+INSERT INTO Treatments VALUES (103, 'Knee Replacement', '5 days', 200000.00, 3);
+INSERT INTO Treatments VALUES (104, 'Acne Therapy', '1 month', 5000.00, 4);
+INSERT INTO Treatments VALUES (105, 'Vaccination', '30 mins', 800.00, 5);
+INSERT INTO Treatments VALUES (106, 'Chemotherapy', '3 weeks', 75000.00, 6);
+INSERT INTO Treatments VALUES (107, 'Sinus Surgery', '2 days', 40000.00, 7);
+INSERT INTO Treatments VALUES (108, 'Endoscopy', '2 hours', 6000.00, 8);
+INSERT INTO Treatments VALUES (109, 'Kidney Stone Removal', '3 days', 55000.00, 9);
+INSERT INTO Treatments VALUES (110, 'Counseling Session', '1 hour', 1500.00, 10);
+
+SELECT * FROM Treatments;
+
+-- INNER JOIN
+SELECT Treatments.TreatmentName, Treatments.Duration, Treatments.Cost,
+       HospitalDepartments.DeptName, HospitalDepartments.Specialization
+FROM Treatments
+INNER JOIN HospitalDepartments ON Treatments.DeptID = HospitalDepartments.DeptID;
+
+-- LEFT JOIN
+SELECT Treatments.TreatmentName, Treatments.Duration, HospitalDepartments.DeptName
+FROM Treatments
+LEFT JOIN HospitalDepartments ON Treatments.DeptID = HospitalDepartments.DeptID;
+
+-- RIGHT JOIN
+SELECT HospitalDepartments.DeptName, HospitalDepartments.Specialization, Treatments.TreatmentName
+FROM Treatments
+RIGHT JOIN HospitalDepartments ON Treatments.DeptID = HospitalDepartments.DeptID;
