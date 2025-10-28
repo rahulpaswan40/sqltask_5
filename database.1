@@ -1,45 +1,56 @@
-CREATE TABLE categories (
-    category_id VARCHAR(5) PRIMARY KEY,
-    category_name VARCHAR(50) NOT NULL
+CREATE TABLE RestaurantBrands (
+    BrandID INT PRIMARY KEY,
+    BrandName VARCHAR(100),
+    OriginCountry VARCHAR(50)
 );
 
-INSERT INTO categories (category_id, category_name)
-VALUES
-('ELEC', 'Electronics'),
-('CLTH', 'Clothing'),
-('BOOK', 'Books');
-
-SELECT * FROM categories;
-
-
-CREATE TABLE products (
-    product_id SERIAL PRIMARY KEY,
-    product_name VARCHAR(100) NOT NULL,
-    price NUMERIC(10, 2),
-    category_id VARCHAR(5) REFERENCES categories(category_id)
+CREATE TABLE MenuItems (
+    ItemID INT PRIMARY KEY,
+    ItemName VARCHAR(50),
+    Category VARCHAR(20),
+    Price DECIMAL(10,2),
+    BrandID INT,
+    FOREIGN KEY (BrandID) REFERENCES RestaurantBrands(BrandID)
 );
 
-INSERT INTO products (product_name, price, category_id)
-VALUES
-('Laptop Pro X', 1200.00, 'ELEC'),
-('Denim Jacket', 75.50, 'CLTH'),
-('Sci-Fi Thriller', 15.99, 'BOOK'),
-('Smartwatch Z', 299.99, 'ELEC'),
-('Cotton T-Shirt', 25.00, 'CLTH');
+INSERT INTO RestaurantBrands VALUES (1, 'Dominos', 'USA');
+INSERT INTO RestaurantBrands VALUES (2, 'McDonalds', 'USA');
+INSERT INTO RestaurantBrands VALUES (3, 'KFC', 'USA');
+INSERT INTO RestaurantBrands VALUES (4, 'Burger King', 'USA');
+INSERT INTO RestaurantBrands VALUES (5, 'Pizza Hut', 'USA');
+INSERT INTO RestaurantBrands VALUES (6, 'Subway', 'USA');
+INSERT INTO RestaurantBrands VALUES (7, 'Barbeque Nation', 'India');
+INSERT INTO RestaurantBrands VALUES (8, 'Haldiram', 'India');
+INSERT INTO RestaurantBrands VALUES (9, 'Biryani Blues', 'India');
+INSERT INTO RestaurantBrands VALUES (10, 'Wow Momo', 'India');
 
-SELECT * FROM products;
+SELECT * FROM RestaurantBrands;
 
+INSERT INTO MenuItems VALUES (101, 'Veg Pizza', 'Main', 299.00, 1);
+INSERT INTO MenuItems VALUES (102, 'Chicken Burger', 'Main', 199.00, 2);
+INSERT INTO MenuItems VALUES (103, 'Zinger Burger', 'Main', 249.00, 3);
+INSERT INTO MenuItems VALUES (104, 'Whopper', 'Main', 279.00, 4);
+INSERT INTO MenuItems VALUES (105, 'Cheese Pizza', 'Main', 349.00, 5);
+INSERT INTO MenuItems VALUES (106, 'Veg Sub', 'Main', 229.00, 6);
+INSERT INTO MenuItems VALUES (107, 'Paneer Tikka', 'Starter', 399.00, 7);
+INSERT INTO MenuItems VALUES (108, 'Rajma Chawal', 'Main', 149.00, 8);
+INSERT INTO MenuItems VALUES (109, 'Chicken Biryani', 'Main', 299.00, 9);
+INSERT INTO MenuItems VALUES (110, 'Veg Momo', 'Starter', 99.00, 10);
 
-SELECT
-    p.product_name,
-    p.price,
-    c.category_name
-FROM
-    products p
-JOIN
-    categories c ON p.category_id = c.category_id;
+SELECT * FROM MenuItems;
 
+-- INNER JOIN
+SELECT MenuItems.ItemName, MenuItems.Category, MenuItems.Price,
+       RestaurantBrands.BrandName, RestaurantBrands.OriginCountry
+FROM MenuItems
+INNER JOIN RestaurantBrands ON MenuItems.BrandID = RestaurantBrands.BrandID;
 
+-- LEFT JOIN
+SELECT MenuItems.ItemName, MenuItems.Category, RestaurantBrands.BrandName
+FROM MenuItems
+LEFT JOIN RestaurantBrands ON MenuItems.BrandID = RestaurantBrands.BrandID;
 
-DROP TABLE products;
-DROP TABLE categories;
+-- RIGHT JOIN
+SELECT RestaurantBrands.BrandName, RestaurantBrands.OriginCountry, MenuItems.ItemName
+FROM MenuItems
+RIGHT JOIN RestaurantBrands ON MenuItems.BrandID = RestaurantBrands.BrandID;
